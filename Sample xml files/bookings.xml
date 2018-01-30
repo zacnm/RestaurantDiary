@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ArrayOfBooking xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Booking>
+    <Name>Johnson</Name>
+    <Guests>2</Guests>
+    <ContactInfo>535 525</ContactInfo>
+    <TableID>2</TableID>
+    <Time>2018-01-01T13:00:00</Time>
+    <Notes />
+  </Booking>
+  <Booking>
+    <Name>Baker</Name>
+    <Guests>4</Guests>
+    <ContactInfo>258 937</ContactInfo>
+    <TableID>1</TableID>
+    <Time>2018-01-01T13:45:00</Time>
+    <Notes>1x gluten-free</Notes>
+  </Booking>
+  <Booking>
+    <Name>Hemmings</Name>
+    <Guests>3</Guests>
+    <ContactInfo>817 162</ContactInfo>
+    <TableID>4</TableID>
+    <Time>2018-01-01T18:00:00</Time>
+    <Notes>Birthday - bringing a cake</Notes>
+  </Booking>
+  <Booking>
+    <Name>Englund</Name>
+    <Guests>2</Guests>
+    <ContactInfo>836 114</ContactInfo>
+    <TableID>2</TableID>
+    <Time>2018-01-01T19:30:00</Time>
+    <Notes />
+  </Booking>
+  <Booking>
+    <Name>Wayne</Name>
+    <Guests>4</Guests>
+    <ContactInfo />
+    <TableID>1</TableID>
+    <Time>2018-01-24T14:00:00</Time>
+    <Notes />
+  </Booking>
+  <Booking>
+    <Name>test1</Name>
+    <Guests>4</Guests>
+    <ContactInfo />
+    <TableID>1</TableID>
+    <Time>2018-01-26T12:00:00</Time>
+    <Notes />
+  </Booking>
+  <Booking>
+    <Name>test2</Name>
+    <Guests>2</Guests>
+    <ContactInfo />
+    <TableID>1</TableID>
+    <Time>2018-01-26T14:15:00</Time>
+    <Notes />
+  </Booking>
+</ArrayOfBooking>

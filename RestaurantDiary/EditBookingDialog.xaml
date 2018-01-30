@@ -1,0 +1,179 @@
+﻿<Window x:Class="RestaurantDiary.EditBookingDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:RestaurantDiary"
+        mc:Ignorable="d"
+        Title="Edit Booking" Height="360" Width="300" x:Name="window" ResizeMode="NoResize">
+    <Grid>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" MinWidth="96"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="34*"/>
+            <RowDefinition Height="34*"/>
+            <RowDefinition Height="34*"/>
+            <RowDefinition Height="34*"/>
+            <RowDefinition Height="34*"/>
+            <RowDefinition Height="34*"/>
+            <RowDefinition Height="34*"/>
+            <RowDefinition Height="34*"/>
+            <RowDefinition Height="34*"/>
+            <RowDefinition Height="34*"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Text="Name:" Grid.Row="0" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Bottom" Height="16" />
+        <TextBox x:Name="NameTextBox" Width="141" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Bottom"
+                 Margin="22,0,0,0" Height="18"/>
+
+        <TextBlock Text="Guests:" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Bottom" Height="16"/>
+        <ComboBox x:Name="GuestsComboBox" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="22,0,0,0"
+                 Width="50" Height="22" SelectedIndex="0" ItemsSource="{Binding Guests}" SelectionChanged="GuestsComboBox_SelectionChanged"/>
+
+        <TextBlock Text="Date:" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Bottom"/>
+        <DatePicker x:Name="DateCalendar" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="22, 0, 0, 0" 
+                    SelectedDateChanged="DateCalendar_SelectedDateChanged"/>
+
+        <TextBlock Text="Shift:" Grid.Row="3" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Bottom" Height="16" Margin="0,0,0,30" Grid.RowSpan="2"/>
+        <ComboBox x:Name="ShiftComboBox" Grid.Row="3" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Bottom" 
+                  Margin="22,0,0,0" Height="22" MinWidth="50" SelectionChanged="ShiftComboBox_SelectionChanged">
+            <ComboBoxItem Content="Lunch"/>
+            <ComboBoxItem Content="Dinner"/>
+        </ComboBox>
+
+        <TextBlock Text="Time:" Grid.Row="4" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Bottom" Height="16"/>
+        <ComboBox x:Name="TimeComboBox" Grid.Row="4" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Bottom" 
+                  Margin="22,0,0,0" Height="22" MinWidth="50" ItemsSource="{Binding Times}" SelectedIndex="0">
+
+            <ComboBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding Converter={local:DateTimeToTimeStringConverter}}"/>
+                </DataTemplate>
+            </ComboBox.ItemTemplate>
+
+            <ComboBox.ItemContainerStyle>
+                <Style TargetType="ComboBoxItem">
+                    <Style.Triggers>
+                        <DataTrigger Value="True">
+                            <DataTrigger.Binding>
+                                <MultiBinding Converter="{local:ShowTimeComboBoxItemConverter}">
+                                    <Binding ElementName="ShiftComboBox" Path="SelectedIndex"/>
+                                    <Binding />
+                                </MultiBinding>
+                            </DataTrigger.Binding>
+                            <Setter Property="Visibility" Value="Visible"/>
+                        </DataTrigger>
+                        <DataTrigger Value="False">
+                            <DataTrigger.Binding>
+                                <MultiBinding Converter="{local:ShowTimeComboBoxItemConverter}">
+                                    <Binding ElementName="ShiftComboBox" Path="SelectedIndex"/>
+                                    <Binding />
+                                </MultiBinding>
+                            </DataTrigger.Binding>
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </ComboBox.ItemContainerStyle>
+
+        </ComboBox>
+
+        <TextBlock Text="Table:" Grid.Row="5" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Bottom" Height="16"/>
+        <ComboBox x:Name="TableComboBox" Grid.Row="5" Grid.Column="01" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="22,0,0,0" 
+                  Height="22" MinWidth="50" ItemsSource="{Binding Tables}">
+
+            <ComboBox.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Table "/>
+                        <TextBlock Text="{Binding ID}"/>
+                        <TextBlock Text=" - "/>
+                        <TextBlock Text="{Binding Seats}"/>
+                        <TextBlock Text=" seats"/>
+                    </StackPanel>
+                </DataTemplate>
+            </ComboBox.ItemTemplate>
+
+            <ComboBox.ItemContainerStyle>
+                <Style TargetType="ComboBoxItem">
+                    <Style.Triggers>
+                        <DataTrigger Value="Unavailable">
+                            <DataTrigger.Binding>
+                                <MultiBinding Converter="{local:EditBookingComparisonConverter}">
+                                    <Binding ElementName="GuestsComboBox" Path="SelectedItem" />
+                                    <Binding ElementName="TimeComboBox" Path="SelectedItem"/>
+                                    <Binding Path="Bookings" RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}"/>
+                                    <Binding />
+                                    <Binding ElementName="DateCalendar" Path="SelectedDate"/>
+                                </MultiBinding>
+                            </DataTrigger.Binding>
+                            <Setter Property="Foreground" Value="LightGray" />
+                            <Setter Property="Focusable" Value="False"/>
+                            <Setter Property="IsHitTestVisible" Value="False"/>
+                        </DataTrigger>
+                        <DataTrigger Value="Perfect">
+                            <DataTrigger.Binding>
+                                <MultiBinding Converter="{local:EditBookingComparisonConverter}">
+                                    <Binding ElementName="GuestsComboBox" Path="SelectedItem" />
+                                    <Binding ElementName="TimeComboBox" Path="SelectedItem"/>
+                                    <Binding Path="Bookings" RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}"/>
+                                    <Binding />
+                                    <Binding ElementName="DateCalendar" Path="SelectedDate"/>
+                                </MultiBinding>
+                            </DataTrigger.Binding>
+                            <Setter Property="Foreground" Value="Blue" />
+                            <Setter Property="Focusable" Value="True"/>
+                            <Setter Property="IsHitTestVisible" Value="True"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                    <Setter Property="Foreground" Value="Black" />
+                    <Setter Property="Focusable" Value="True"/>
+                    <Setter Property="IsHitTestVisible" Value="True"/>
+                </Style>
+            </ComboBox.ItemContainerStyle>
+
+        </ComboBox>
+
+        <TextBlock Text="Contact info:" Grid.Row="6" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Bottom" Height="16"/>
+        <TextBox x:Name="ContactInfoTextBox" Grid.Row="6" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="141" 
+                 Margin="22,0,0,0" Height="18"/>
+
+        <TextBlock HorizontalAlignment="Right" Grid.Row="7" TextWrapping="Wrap" Text="Notes:" VerticalAlignment="Bottom" Height="16"/>
+        <TextBox x:Name="NotesTextBox" Grid.Column="1" HorizontalAlignment="Left" Margin="22,15,0,0" Grid.Row="7" TextWrapping="Wrap" 
+                 VerticalAlignment="Top" Width="141" Height="36" Grid.RowSpan="2"/>
+
+        <Button x:Name="EditButton" Content="Save" Grid.Column="1" HorizontalAlignment="Left" Margin="22,0,0,0" Grid.Row="9" 
+                VerticalAlignment="Top" Width="75" Click="EditButton_Click" Height="20">
+            <Button.Style>
+                <Style TargetType="Button">
+                    <Style.Triggers>
+                        <DataTrigger Value="False">
+                            <DataTrigger.Binding>
+                                <MultiBinding Converter="{local:EditBookingButtonEnabledConverter}">
+                                    <Binding ElementName="NameTextBox" Path="Text"/>
+                                </MultiBinding>
+                            </DataTrigger.Binding>
+                            <Setter Property="IsEnabled" Value="False"/>
+                        </DataTrigger>
+                        <DataTrigger Value="True">
+                            <DataTrigger.Binding>
+                                <MultiBinding Converter="{local:EditBookingButtonEnabledConverter}">
+                                    <Binding ElementName="NameTextBox" Path="Text"/>
+                                </MultiBinding>
+                            </DataTrigger.Binding>
+                            <Setter Property="IsEnabled" Value="True"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Button.Style>
+        </Button>
+        <Button x:Name="CancelButton" Content="Cancel" Grid.Column="1" HorizontalAlignment="Left" Margin="109,0,0,0" Grid.Row="9" 
+                VerticalAlignment="Top" Width="75" Click="CancelButton_Click" Height="20"/>
+
+
+    </Grid>
+</Window>

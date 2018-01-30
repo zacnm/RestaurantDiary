@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ArrayOfTable xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Table>
+    <ID>1</ID>
+    <Seats>4</Seats>
+  </Table>
+  <Table>
+    <ID>2</ID>
+    <Seats>2</Seats>
+  </Table>
+  <Table>
+    <ID>3</ID>
+    <Seats>4</Seats>
+  </Table>
+  <Table>
+    <ID>4</ID>
+    <Seats>3</Seats>
+  </Table>
+</ArrayOfTable>
